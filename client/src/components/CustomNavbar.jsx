@@ -10,7 +10,6 @@ import shopping_cart_icon from "../assets/icons/shopping-cart-11.svg";
 import "./css/CustomNavbar.css";
 
 const CustomNavbar = () => {
-  console.log(useFormContext());
   const { switchToLogin, switchToRegister } = useFormContext();
 
   return (

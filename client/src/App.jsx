@@ -18,7 +18,7 @@ function App() {
       <Router>
         <FormProvider>
           <CustomNavbar />
-          <Container className="content mt-3">
+          <Container className="content mt-5">
             <Routes>
               <Route exact path="/" element={<Home />} />
               <Route exact path="/login-register" element={<Login />} />
