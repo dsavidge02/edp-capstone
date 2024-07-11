@@ -35,3 +35,5 @@ with open('ducks.json', 'w') as f:
     f.write(json_data)
 
 print("1,000 JSON documents have been saved to 'ducks.json'.")
+
+# mongoimport --uri mongodb://localhost:27017/duckStock --collection ducks --file ducks.json --jsonArray --drop
