@@ -140,14 +140,18 @@ const Shop = () => {
   };
 
   const filterDucks = async () => {
+    console.log(JSON.stringify(filters));
     try {
-      const response = await fetch(`${import.meta.env.VITE_DUCKS_API_URL}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(filters),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_DUCKS_API_URL}/search`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(filters),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
