@@ -8,6 +8,19 @@ import Form from "react-bootstrap/Form";
 import "./css/Shop.css";
 import { useCart } from "../contexts/CartContext";
 import { Button } from "react-bootstrap";
+import PirateImg from "../assets/img/PirateDuck.png";
+import SportImg from "../assets/img/SportDuck.png";
+import FoodImg from "../assets/img/FoodDuck.png";
+import ClassicImg from "../assets/img/ClassicDuck.png";
+import AnimalImg from "../assets/img/AnimalDuck.png";
+
+const styleToImage = {
+  sports: SportImg,
+  food: FoodImg,
+  classic: ClassicImg,
+  animal: AnimalImg,
+  pirate: PirateImg 
+};
 
 const Shop = () => {
   const [filters, setFilters] = useState({
@@ -389,42 +402,42 @@ const Shop = () => {
           ) : (
             <Row>
               {products.map((product) => (
-                <Col key={product._id} sm={4} className="mb-4">
-                  <Card>
-                    <Card.Body>
-                      <Card.Title>{product.productName}</Card.Title>
-                      <Card.Text>Price: {product.duckDetails.price}</Card.Text>
-                      <Card.Text>Size: {product.duckDetails.size}</Card.Text>
-                      <Card.Text>Style: {product.duckDetails.style}</Card.Text>
-                      <Card.Text>Speed: {product.duckDetails.speed}</Card.Text>
-                      <Card.Text>
-                        Condition: {product.duckDetails.condition}
-                      </Card.Text>
-                      <Card.Text>
-                        Buoyancy:{" "}
-                        {product.additionalFeatures.buoyancy ? "True" : "False"}
-                      </Card.Text>
-                      <Card.Text>
-                        In Stock:{" "}
-                        {product.additionalFeatures.inStock ? "True" : "False"}
-                      </Card.Text>
-                      <Card.Text>
-                        Is Featured:{" "}
-                        {product.additionalFeatures.isFeatured
-                          ? "True"
-                          : "False"}
-                      </Card.Text>
-                      <Card.Text>
-                        On Sale:{" "}
-                        {product.additionalFeatures.onSale ? "True" : "False"}
-                      </Card.Text>
-                      <Button onClick={() => handleAddToCart(product)}>
-                        Add to Cart
-                      </Button>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              ))}
+              <Col key={product._id} sm={4} className="mb-4">
+                <Card className="duck-card">
+              
+              <img
+                src={styleToImage[product.duckDetails.style] || ClassicImg} 
+                alt={product.duckDetails.style}
+                className="duck-icon"
+              />
+                  <Card.Body>
+                    <Card.Title>{product.productName}</Card.Title>
+                    <Card.Text>Price: {product.duckDetails.price}</Card.Text>
+                    <Card.Text>Size: {product.duckDetails.size}</Card.Text>
+                    <Card.Text>Style: {product.duckDetails.style}</Card.Text>
+                    <Card.Text>Speed: {product.duckDetails.speed}</Card.Text>
+                    <Card.Text>
+                      Condition: {product.duckDetails.condition}
+                    </Card.Text>
+                    <Card.Text>
+                      Buoyancy: {product.additionalFeatures.buoyancy ? "True" : "False"}
+                    </Card.Text>
+                    <Card.Text>
+                      In Stock: {product.additionalFeatures.inStock ? "True" : "False"}
+                    </Card.Text>
+                    <Card.Text>
+                      Is Featured: {product.additionalFeatures.isFeatured ? "True" : "False"}
+                    </Card.Text>
+                    <Card.Text>
+                      On Sale: {product.additionalFeatures.onSale ? "True" : "False"}
+                    </Card.Text>
+                    <Button onClick={() => handleAddToCart(product)}>
+                      Add to Cart
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
             </Row>
           )}
         </Col>
