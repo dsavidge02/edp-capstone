@@ -1,0 +1,88 @@
+.form-container {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  margin-top: 100px;
+  background: #fff;
+  padding-bottom: 30px;
+  width: 600px;
+  border-radius: 30px;
+  border: 2px solid #ecde57;
+}
+
+.form-container h2 {
+  margin-top: 1rem;
+  font-size: 2.5rem;
+  text-transform: uppercase;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+  background-image: linear-gradient(to top, #b68600 30%, #ecde57 100%);
+  background-size: 100%;
+}
+
+.inputs {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.input {
+  display: flex;
+  align-items: center;
+  margin: auto;
+  width: 480px;
+  height: 80px;
+  background: #eaeaea;
+  border-radius: 6px;
+}
+
+.input img {
+  margin: 0px 30px;
+}
+
+.input input {
+  height: 50px;
+  width: 400px;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #797979;
+  font-size: 1rem;
+}
+
+.form-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-bottom span {
+  color: #4c00b4;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.form-bottom Button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 220px;
+  height: 59px;
+  color: #fff;
+  background-image: linear-gradient(to top, #b68600 30%, #ecde57 100%);
+  border-radius: 50px;
+  font-size: 19px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+  border: none;
+}
+
+.form-bottom Button:hover {
+  background-image: linear-gradient(to top, #ecde57 30%, #b68600 100%);
+}

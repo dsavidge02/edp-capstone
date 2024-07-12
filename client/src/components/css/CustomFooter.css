@@ -1,0 +1,44 @@
+.custom-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.footer-header {
+  font-size: 1.25rem;
+}
+
+.footer-par {
+  font-size: 1rem;
+}
+
+@media (max-width: 1200px) {
+  .footer-header {
+    font-size: 1rem;
+  }
+
+  .footer-par {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 780px) {
+  .footer-header {
+    font-size: 0.8rem;
+  }
+
+  .footer-par {
+    font-size: 0.6rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .footer-header {
+    font-size: 0.6rem;
+  }
+
+  .footer-par {
+    font-size: 0.4rem;
+  }
+}
