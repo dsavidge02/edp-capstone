@@ -32,12 +32,31 @@ const Checkout = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle submission logic (e.g., submit order, clear cart, show confirmation)
-    console.log("Order details:", orderDetails);
-    // Example: You can clear the cart after successful submission
-    clearCart();
+    console.log(JSON.stringify(orderDetails));
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_DUCKS_API_URL}/checkout`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(orderDetails),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Checkout response:", data);
+      clearCart();
+    } catch (error) {
+      console.error("Error submitting checkout:", error);
+    }
   };
 
   const handleRemoveFromCart = (item) => {
