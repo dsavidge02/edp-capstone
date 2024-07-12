@@ -47,10 +47,9 @@ app.post("/ducks/search", async (req, res) => {
       inStock,
       isFeatured,
       onSale,
-      minPrice,
-      maxPrice,
-      sortBy,
-      sortOrder,
+      low,
+      high,
+      productName,
     } = req.body;
 
     console.log("Searching for ducks with filters:", {
@@ -62,10 +61,9 @@ app.post("/ducks/search", async (req, res) => {
       inStock,
       isFeatured,
       onSale,
-      minPrice,
-      maxPrice,
-      sortBy,
-      sortOrder,
+      low,
+      high,
+      productName,
     });
 
     // connect to  MongoDB
@@ -75,7 +73,9 @@ app.post("/ducks/search", async (req, res) => {
 
     //query object based on selected filters
     const query = {};
-
+    if (productName) {
+      query["productName"] = { $regex: productName, $options: "i" };
+    }
     if (size && size.length > 0) query["duckDetails.size"] = { $in: size };
     if (style && style.length > 0) query["duckDetails.style"] = { $in: style };
     if (speed && speed.length > 0) query["duckDetails.speed"] = { $in: speed };
@@ -86,25 +86,16 @@ app.post("/ducks/search", async (req, res) => {
     if (isFeatured !== undefined)
       query["additionalFeatures.isFeatured"] = isFeatured;
     if (onSale !== undefined) query["additionalFeatures.onSale"] = onSale;
-    if (minPrice || maxPrice) {
-      // Price range filtre
+    if (low || high) {
       query["duckDetails.price"] = {};
       // Min price
-      if (minPrice) query["duckDetails.price"]["$gte"] = parseFloat(minPrice);
+      if (low) query["duckDetails.price"]["$gte"] = parseFloat(low);
       // Max price
-      if (maxPrice) query["duckDetails.price"]["$lte"] = parseFloat(maxPrice);
+      if (high) query["duckDetails.price"]["$lte"] = parseFloat(high);
     }
 
-    // sort obj
-    const sort = {};
-    if (sortBy) {
-      sort[`duckDetails.${sortBy}`] = sortOrder === "desc" ? -1 : 1;
-    }
+    const ducks = await collection.find(query).toArray();
 
-    // find ducks with matching  filters
-    const ducks = await collection.find(query).sort(sort).toArray();
-
-    console.log("Found ducks:", ducks);
     if (ducks.length === 0) {
       return res
         .status(404)

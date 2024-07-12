@@ -1,14 +1,14 @@
 import json
 import random
 
-#possible values for each field
+# possible values for each field
 prices = [1, 2, 3, 5, 8]
 styles = ["classic", "pirate", "sports", "animal", "food"]
 speeds = ["slow", "average", "fast", "mystery"]
 conditions = ["new", "used"]
 sizes = ["small", "medium", "large"]
 
-#gen 1,000 JSON documents
+# generate 1,000 JSON documents
 documents = []
 for _ in range(1000):
     document = {
@@ -26,11 +26,19 @@ for _ in range(1000):
             "onSale": bool(0)
         }
     }
+    
+    product_name = ""
+    for key, value in document["duckDetails"].items():
+        if isinstance(value, str) and value:
+            product_name += value[0].upper()
+    
+    document["productName"] = product_name
+
     documents.append(document)
 
 json_data = json.dumps(documents, indent=4)
 
-#save to 'ducks.json'
+# save to 'ducks.json'
 with open('ducks.json', 'w') as f:
     f.write(json_data)
 

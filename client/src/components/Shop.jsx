@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -21,74 +21,12 @@ const Shop = () => {
     onSale: false,
   });
 
-  // Dummy product data
-  const products = [
-    {
-      id: 1,
-      name: "Product 1",
-      price: "$10",
-      size: "Small",
-      style: "Casual",
-      buoyancy: true,
-      inStock: true,
-      isFeatured: false,
-      onSale: true,
-      speed: "Slow",
-      condition: "New",
-    },
-    {
-      id: 2,
-      name: "Product 2",
-      price: "$20",
-      size: "Medium",
-      style: "Formal",
-      buoyancy: false,
-      inStock: true,
-      isFeatured: true,
-      onSale: false,
-      speed: "Medium",
-      condition: "Used",
-    },
-    {
-      id: 3,
-      name: "Product 3",
-      price: "$15",
-      size: "Large",
-      style: "Casual",
-      buoyancy: true,
-      inStock: false,
-      isFeatured: false,
-      onSale: true,
-      speed: "Fast",
-      condition: "New",
-    },
-    {
-      id: 4,
-      name: "Product 4",
-      price: "$25",
-      size: "Medium",
-      style: "Casual",
-      buoyancy: false,
-      inStock: true,
-      isFeatured: true,
-      onSale: true,
-      speed: "Medium",
-      condition: "Used",
-    },
-    {
-      id: 5,
-      name: "Product 5",
-      price: "$18",
-      size: "Small",
-      style: "Formal",
-      buoyancy: true,
-      inStock: true,
-      isFeatured: false,
-      onSale: false,
-      speed: "Fast",
-      condition: "New",
-    },
-  ];
+  const [productName, setProductName] = useState("");
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    filterDucks();
+  }, [filters, productName]);
 
   // Handle event change
   const handleEventChange = (e) => {
@@ -135,12 +73,9 @@ const Shop = () => {
         [name]: checked,
       });
     }
-
-    filterDucks();
   };
 
   const filterDucks = async () => {
-    console.log(JSON.stringify(filters));
     try {
       const response = await fetch(
         `${import.meta.env.VITE_DUCKS_API_URL}/search`,
@@ -149,21 +84,30 @@ const Shop = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(filters),
+          body: JSON.stringify({
+            ...filters,
+            productName: productName,
+          }),
         }
       );
 
       if (!response.ok) {
+        setProducts([]);
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log(data);
+
+      setProducts(data);
       // Handle post submission logic (like showing a success message)
     } catch (error) {
       console.error("Error posting data", error);
       // Handle errors here
     }
+  };
+
+  const handleSearchInputChange = (e) => {
+    setProductName(e.target.value);
   };
 
   return (
@@ -172,6 +116,12 @@ const Shop = () => {
         {/* Sidebar for filters */}
         <Col sm={3} className="mb-4">
           <Form>
+            <Form.Control
+              type="text"
+              placeholder="Enter product name..."
+              value={productName}
+              onChange={handleSearchInputChange}
+            />
             <Accordion>
               {/* Filters Accordion */}
               <Accordion.Item eventKey="filters">
@@ -425,34 +375,46 @@ const Shop = () => {
         </Col>
         {/* Main content area for products */}
         <Col sm={9}>
-          <Row>
-            {products.map((product) => (
-              <Col key={product.id} sm={4} className="mb-4">
-                <Card>
-                  <Card.Body>
-                    <Card.Title>{product.name}</Card.Title>
-                    <Card.Text>Price: {product.price}</Card.Text>
-                    <Card.Text>Size: {product.size}</Card.Text>
-                    <Card.Text>Style: {product.style}</Card.Text>
-                    <Card.Text>
-                      Buoyancy: {product.buoyancy ? "True" : "False"}
-                    </Card.Text>
-                    <Card.Text>
-                      In Stock: {product.inStock ? "True" : "False"}
-                    </Card.Text>
-                    <Card.Text>
-                      Is Featured: {product.isFeatured ? "True" : "False"}
-                    </Card.Text>
-                    <Card.Text>
-                      On Sale: {product.onSale ? "True" : "False"}
-                    </Card.Text>
-                    <Card.Text>Speed: {product.speed}</Card.Text>
-                    <Card.Text>Condition: {product.condition}</Card.Text>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
+          {products.length === 0 ? (
+            <p>No ducks found with the specified criteria.</p>
+          ) : (
+            <Row>
+              {products.map((product) => (
+                <Col key={product.id} sm={4} className="mb-4">
+                  <Card>
+                    <Card.Body>
+                      <Card.Title>{product.productName}</Card.Title>
+                      <Card.Text>Price: {product.duckDetails.price}</Card.Text>
+                      <Card.Text>Size: {product.duckDetails.size}</Card.Text>
+                      <Card.Text>Style: {product.duckDetails.style}</Card.Text>
+                      <Card.Text>Speed: {product.duckDetails.speed}</Card.Text>
+                      <Card.Text>
+                        Condition: {product.duckDetails.condition}
+                      </Card.Text>
+                      <Card.Text>
+                        Buoyancy:{" "}
+                        {product.additionalFeatures.buoyancy ? "True" : "False"}
+                      </Card.Text>
+                      <Card.Text>
+                        In Stock:{" "}
+                        {product.additionalFeatures.inStock ? "True" : "False"}
+                      </Card.Text>
+                      <Card.Text>
+                        Is Featured:{" "}
+                        {product.additionalFeatures.isFeatured
+                          ? "True"
+                          : "False"}
+                      </Card.Text>
+                      <Card.Text>
+                        On Sale:{" "}
+                        {product.additionalFeatures.onSale ? "True" : "False"}
+                      </Card.Text>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              ))}
+            </Row>
+          )}
         </Col>
       </Row>
     </Container>

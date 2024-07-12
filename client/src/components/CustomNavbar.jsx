@@ -41,22 +41,6 @@ const CustomNavbar = () => {
         />
         <Navbar.Collapse id="basic-navbar-nav" className="bg-light">
           <Nav className="ms-auto me-4">
-            <form className="d-flex align-items-center">
-              <input
-                className="form-control me-2"
-                type="search"
-                placeholder="Explore Ducks"
-                aria-label="Search"
-              />
-              <button
-                className="navbar-search-button navbar-link"
-                type="submit"
-                as={Link}
-                to="/shop"
-              >
-                SEARCH
-              </button>
-            </form>
             <NavDropdown
               title="SHOP"
               className="navbar-clickable navbar-link"
