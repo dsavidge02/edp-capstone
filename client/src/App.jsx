@@ -13,6 +13,7 @@ import Shop from "./components/Shop";
 import { FormProvider } from "./contexts/FormContext";
 import Checkout from "./components/Checkout";
 import { CartProvider } from "./contexts/CartContext";
+import Recommended from "./components/Recommended";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
               <Routes>
                 <Route exact path="/" element={<Featured />} />
                 <Route exact path="/login-register" element={<Login />} />
+                <Route exact path="/recommended" element={<Recommended />} />
                 <Route exact path="/featured" element={<Featured />} />
                 <Route exact path="/shop" element={<Shop />} />
                 <Route exact path="/checkout" element={<Checkout />} />
