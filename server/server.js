@@ -165,3 +165,32 @@ console.error('Error:', err);
 res.status(500).send('Error saving checkout data');
 }
 });
+
+
+//Featured ducks post
+//search for ducks
+app.get("/ducks/featured", async (req, res) => {
+  try {
+
+
+    // connect to  MongoDB
+    const client = await MongoClient.connect(url);
+    const db = client.db(dbName);
+    const collection = db.collection(collectionName);
+
+    //query object based on selected filters
+    const query = {"additionalFeatures.isFeatured": true};
+
+    const ducks = await collection.find(query).toArray();
+
+    if (ducks.length === 0) {
+      return res
+        .status(404)
+        .send("No featured ducks found.");
+    }
+    res.json(ducks);
+  } catch (err) {
+    console.error("Error:", err);
+    res.status(500).send("Error searching for ducks");
+  }
+});
