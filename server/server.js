@@ -1,7 +1,8 @@
 import express from "express";
-import { MongoClient, ObjectId } from "mongodb";
+import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
 import cors from "cors";
+import { PythonShell } from "python-shell";
 
 dotenv.config();
 const url = process.env.MONGO_DB_URL;
@@ -10,6 +11,7 @@ const collectionName = process.env.MONGO_DB_COLLECTION;
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 const PORT = 3000;
 
 app.get("/ducks", async (req, res) => {
@@ -31,9 +33,6 @@ app.get("/ducks", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
-
-// Middleware to parse JSON bodies
-app.use(express.json());
 
 //search for ducks
 app.post("/ducks/search", async (req, res) => {
@@ -108,7 +107,6 @@ app.post("/ducks/search", async (req, res) => {
   }
 });
 
-
 //search for ducks
 app.post("/ducks/checkout", async (req, res) => {
   try {
@@ -136,61 +134,81 @@ app.post("/ducks/checkout", async (req, res) => {
       cvv,
     });
 
-  // connect to  MongoDB
-  const client = await MongoClient.connect(url);
-  const db = client.db(dbName);
-  const collection = db.collection(process.env.MONGO_DB_COLLECTION_CHECKOUT);
+    // connect to  MongoDB
+    const client = await MongoClient.connect(url);
+    const db = client.db(dbName);
+    const collection = db.collection(process.env.MONGO_DB_COLLECTION_CHECKOUT);
 
-  //build doc  to be inserted
-  const checkoutData = {
-    name,
-    email,
-    address,
-    city,
-    state,
-    zip,
-    creditCardNumber,
-    expirationDate,
-    cvv,
-    //timestamp: new Date().toISOString(),
-};
+    //build doc  to be inserted
+    const checkoutData = {
+      name,
+      email,
+      address,
+      city,
+      state,
+      zip,
+      creditCardNumber,
+      expirationDate,
+      cvv,
+      //timestamp: new Date().toISOString(),
+    };
 
-//insert the checkout data to MongoDB
-const result = await collection.insertOne(checkoutData);
-client.close(); 
+    //insert the checkout data to MongoDB
+    const result = await collection.insertOne(checkoutData);
+    client.close();
 
-res.status(201).json({ message: "Checkout data saved successfully", data: result.ops });
-} catch (err) {
-console.error('Error:', err);
-res.status(500).send('Error saving checkout data');
-}
+    res
+      .status(201)
+      .json({ message: "Checkout data saved successfully", data: result.ops });
+  } catch (err) {
+    console.error("Error:", err);
+    res.status(500).send("Error saving checkout data");
+  }
 });
-
 
 //Featured ducks post
 //search for ducks
 app.get("/ducks/featured", async (req, res) => {
   try {
-
-
     // connect to  MongoDB
     const client = await MongoClient.connect(url);
     const db = client.db(dbName);
     const collection = db.collection(collectionName);
 
     //query object based on selected filters
-    const query = {"additionalFeatures.isFeatured": true};
+    const query = { "additionalFeatures.isFeatured": true };
 
     const ducks = await collection.find(query).toArray();
 
     if (ducks.length === 0) {
-      return res
-        .status(404)
-        .send("No featured ducks found.");
+      return res.status(404).send("No featured ducks found.");
     }
     res.json(ducks);
   } catch (err) {
     console.error("Error:", err);
     res.status(500).send("Error searching for ducks");
+  }
+});
+
+app.get("/ducks/productID/:id", async (req, res) => {
+  const productID = parseInt(req.params.id);
+  try {
+    const client = await MongoClient.connect(url);
+    const db = client.db(dbName);
+    const collection = db.collection(collectionName);
+
+    const query = { productID: productID };
+    const duck = await collection.findOne(query);
+
+    if (!duck) {
+      return res
+        .status(404)
+        .send(`Duck with productID ${productID} not found.`);
+    }
+
+    res.json(duck);
+  } catch (err) {
+    console.error("Error:", err);
+    res.status(500).send("Error searching for duck");
   }
 });
