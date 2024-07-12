@@ -10,7 +10,10 @@ sizes = ["small", "medium", "large"]
 
 # generate 1,000 JSON documents
 documents = []
-for _ in range(1000):
+for duck in range(1000):
+    #first 5 ducks generated are featured
+    isFeatured = True if duck < 5 else False  
+
     document = {
         "duckDetails": {
             "price": random.choice(prices),
@@ -22,11 +25,11 @@ for _ in range(1000):
         "additionalFeatures": {
             "buoyancy": bool(random.getrandbits(1)),
             "inStock": bool(random.getrandbits(1)),
-            "isFeatured": bool(0),
-            "onSale": bool(0)
+            "isFeatured": isFeatured,
+            "onSale": bool(random.getrandbits(1))
         }
     }
-    
+
     product_name = ""
     for key, value in document["duckDetails"].items():
         if isinstance(value, str) and value:
