@@ -25,6 +25,10 @@ export const CartProvider = ({ children }) => {
     );
   };
 
+  const searchCart = (duck) => {
+    return cartItems.some((item) => item._id === duck._id);
+  };
+
   const clearCart = () => {
     setCartItems([]);
   };
@@ -35,7 +39,14 @@ export const CartProvider = ({ children }) => {
 
   return (
     <CartContext.Provider
-      value={{ cartItems, addToCart, removeFromCart, clearCart, getTotalPrice }}
+      value={{
+        cartItems,
+        addToCart,
+        removeFromCart,
+        searchCart,
+        clearCart,
+        getTotalPrice,
+      }}
     >
       {children}
     </CartContext.Provider>

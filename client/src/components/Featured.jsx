@@ -8,7 +8,7 @@ import { useCart } from "../contexts/CartContext";
 import { Link } from "react-router-dom";
 
 const Featured = () => {
-  const { addToCart } = useCart();
+  const { cartItems, addToCart, removeFromCart, searchCart } = useCart();
   const [featuredDucks, setFeaturedDucks] = useState([]);
 
   useEffect(() => {
@@ -33,10 +33,13 @@ const Featured = () => {
     }
   };
 
-  const handleAddToCart = (product) => {
-    addToCart(product);
-    console.log("Item added to cart:", product);
-    // Optionally, show a confirmation message or update UI
+  const handleCartButton = (product) => {
+    const existingItem = cartItems.find((item) => item._id === product._id);
+    if (existingItem) {
+      removeFromCart(product);
+    } else {
+      addToCart(product);
+    }
   };
 
   return (
@@ -57,8 +60,8 @@ const Featured = () => {
                     <Card.Text>
                       Condition: {product.duckDetails.condition}
                     </Card.Text>
-                    <Button onClick={() => handleAddToCart(product)}>
-                      Add to Cart
+                    <Button onClick={() => handleCartButton(product)}>
+                      {searchCart(product) ? "Remove from Cart" : "Add to Cart"}
                     </Button>
                   </Card.Body>
                 </Card>

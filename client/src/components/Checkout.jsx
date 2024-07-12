@@ -11,7 +11,7 @@ import "./css/Checkout.css";
 const Checkout = () => {
   const { cartItems, removeFromCart, getTotalPrice, clearCart } = useCart();
 
-  // State for order form inputs
+  // State for order form inputs and submission status
   const [orderDetails, setOrderDetails] = useState({
     name: "",
     email: "",
@@ -24,6 +24,9 @@ const Checkout = () => {
     cvv: "",
   });
 
+  const [submitting, setSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState("");
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setOrderDetails({
@@ -34,7 +37,7 @@ const Checkout = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(JSON.stringify(orderDetails));
+    setSubmitting(true);
     try {
       const response = await fetch(
         `${import.meta.env.VITE_DUCKS_API_URL}/checkout`,
@@ -54,8 +57,12 @@ const Checkout = () => {
       const data = await response.json();
       console.log("Checkout response:", data);
       clearCart();
+      setSubmitMessage("Order submitted successfully");
     } catch (error) {
       console.error("Error submitting checkout:", error);
+      setSubmitMessage("Order not submitted");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -206,9 +213,20 @@ const Checkout = () => {
                   />
                 </Form.Group>
 
-                <Button variant="primary" type="submit" onClick={handleSubmit}>
-                  Place Order
+                <Button variant="primary" type="submit" disabled={submitting}>
+                  {submitting ? "Submitting..." : "Place Order"}
                 </Button>
+                {submitMessage && (
+                  <p
+                    className={`mt-3 ${
+                      submitMessage.startsWith("Order submitted")
+                        ? "text-success"
+                        : "text-danger"
+                    }`}
+                  >
+                    {submitMessage}
+                  </p>
+                )}
               </Form>
             </Card.Body>
           </Card>
