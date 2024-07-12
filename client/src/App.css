@@ -8,3 +8,45 @@
 .content {
   z-index: 0;
 }
+
+.duck-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  text-align: center;
+  width: 100%;
+  margin: 1rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.duck-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.duck-card img {
+  width: 100%;
+  height: auto;
+}
+
+.pirate {
+  background: url('/img/PirateDuck.png');
+  background-size: 100%;
+}
+
+.classic {
+  background: url('/img/ClassicDuck.png');
+}
+
+.sports {
+  background: url('/img/SportsDuck.png');
+}
+
+.animal {
+  background: url('/img/AnimalDuck.png');
+}
+
+.food {
+  background: url('/img/FoodDuck.png');
+}
