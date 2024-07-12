@@ -22,7 +22,7 @@ const CustomNavbar = () => {
       <Container fluid>
         <Navbar.Brand
           as={Link}
-          to="/Featureds"
+          to="/featured"
           className="d-flex align-items-center ms-4"
         >
           <img
