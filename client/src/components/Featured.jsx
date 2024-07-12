@@ -6,6 +6,19 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import { useCart } from "../contexts/CartContext";
 import { Link } from "react-router-dom";
+import PirateImg from "../assets/img/PirateDuck.png";
+import SportImg from "../assets/img/SportDuck.png";
+import FoodImg from "../assets/img/FoodDuck.png";
+import ClassicImg from "../assets/img/ClassicDuck.png";
+import AnimalImg from "../assets/img/AnimalDuck.png";
+
+const styleToImage = {
+  sports: SportImg,
+  food: FoodImg,
+  classic: ClassicImg,
+  animal: AnimalImg,
+  pirate: PirateImg 
+};
 
 const Featured = () => {
   const { cartItems, addToCart, removeFromCart, searchCart } = useCart();
@@ -50,7 +63,12 @@ const Featured = () => {
           <Row>
             {featuredDucks.map((product) => (
               <Col key={product._id} sm={4} className="mb-4">
-                <Card>
+                <Card className="duck-card">
+                <img
+                src={styleToImage[product.duckDetails.style] || ClassicImg} 
+                alt={product.duckDetails.style}
+                className="duck-icon"
+              />
                   <Card.Body>
                     <Card.Title>{product.productName}</Card.Title>
                     <Card.Text>Price: ${product.duckDetails.price}</Card.Text>
