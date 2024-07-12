@@ -38,7 +38,7 @@ const Shop = () => {
 
   const [productName, setProductName] = useState("");
   const [products, setProducts] = useState([]);
-  const { cartItems, addToCart } = useCart();
+  const { cartItems, addToCart, removeFromCart, searchCart } = useCart();
 
   useEffect(() => {
     filterDucks();
@@ -126,9 +126,13 @@ const Shop = () => {
     setProductName(e.target.value);
   };
 
-  const handleAddToCart = (product) => {
-    addToCart(product);
-    console.log(cartItems);
+  const handleCartButton = (product) => {
+    const existingItem = cartItems.find((item) => item._id === product._id);
+    if (existingItem) {
+      removeFromCart(product);
+    } else {
+      addToCart(product);
+    }
   };
 
   return (

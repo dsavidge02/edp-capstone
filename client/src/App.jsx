@@ -23,11 +23,11 @@ function App() {
             <CustomNavbar />
             <Container className="content mt-5">
               <Routes>
-                <Route exact path="/" element={<Home />} />
+                <Route exact path="/" element={<Featured />} />
                 <Route exact path="/login-register" element={<Login />} />
                 <Route exact path="/featured" element={<Featured />} />
                 <Route exact path="/shop" element={<Shop />} />
-                 <Route exact path="/checkout" element={<Checkout />} />
+                <Route exact path="/checkout" element={<Checkout />} />
               </Routes>
             </Container>
             {/* <CustomFooter /> */}
