@@ -58,13 +58,6 @@ const CustomNavbar = () => {
                 as={Link}
                 to="/shop"
               >
-                DISCOUNT
-              </NavDropdown.Item>
-              <NavDropdown.Item
-                className="navbar-clickable navbar-sublink"
-                as={Link}
-                to="/shop"
-              >
                 ALL DUCKS
               </NavDropdown.Item>
             </NavDropdown>
@@ -88,7 +81,7 @@ const CustomNavbar = () => {
               className="navbar-clickable navbar-link"
               id="navbar-shopping-cart"
               as={Link}
-              to="/login-register"
+              to="/checkout"
               onClick={switchToLogin}
             >
               VIEW CART
