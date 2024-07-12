@@ -56,6 +56,13 @@ const CustomNavbar = () => {
               <NavDropdown.Item
                 className="navbar-clickable navbar-sublink"
                 as={Link}
+                to="/recommended"
+              >
+                RECOMMENDED
+              </NavDropdown.Item>
+              <NavDropdown.Item
+                className="navbar-clickable navbar-sublink"
+                as={Link}
                 to="/shop"
               >
                 ALL DUCKS
