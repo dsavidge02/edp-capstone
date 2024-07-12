@@ -12,24 +12,27 @@ import Featured from "./components/Featured";
 import Shop from "./components/Shop";
 import { FormProvider } from "./contexts/FormContext";
 import Checkout from "./components/Checkout";
+import { CartProvider } from "./contexts/CartContext";
 
 function App() {
   return (
     <>
       <Router>
-        <FormProvider>
-          <CustomNavbar />
-          <Container className="content mt-5">
-            <Routes>
-              <Route exact path="/" element={<Home />} />
-              <Route exact path="/login-register" element={<Login />} />
-              <Route exact path="/featured" element={<Featured />} />
-              <Route exact path="/shop" element={<Shop />} />
-              <Route exact path="/checkout" element={<Checkout />} />
-            </Routes>
-          </Container>
-          {/* <CustomFooter /> */}
-        </FormProvider>
+        <CartProvider>
+          <FormProvider>
+            <CustomNavbar />
+            <Container className="content mt-5">
+              <Routes>
+                <Route exact path="/" element={<Home />} />
+                <Route exact path="/login-register" element={<Login />} />
+                <Route exact path="/featured" element={<Featured />} />
+                <Route exact path="/shop" element={<Shop />} />
+                 <Route exact path="/checkout" element={<Checkout />} />
+              </Routes>
+            </Container>
+            {/* <CustomFooter /> */}
+          </FormProvider>
+        </CartProvider>
       </Router>
     </>
   );
