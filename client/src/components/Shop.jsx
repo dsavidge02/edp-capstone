@@ -6,6 +6,8 @@ import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import "./css/Shop.css";
+import { useCart } from "../contexts/CartContext";
+import { Button } from "react-bootstrap";
 
 const Shop = () => {
   const [filters, setFilters] = useState({
@@ -23,6 +25,7 @@ const Shop = () => {
 
   const [productName, setProductName] = useState("");
   const [products, setProducts] = useState([]);
+  const { cartItems, addToCart } = useCart();
 
   useEffect(() => {
     filterDucks();
@@ -110,6 +113,11 @@ const Shop = () => {
     setProductName(e.target.value);
   };
 
+  const handleAddToCart = (product) => {
+    addToCart(product);
+    console.log(cartItems);
+  };
+
   return (
     <Container fluid className="shop-container">
       <Row>
@@ -117,6 +125,7 @@ const Shop = () => {
         <Col sm={3} className="mb-4">
           <Form>
             <Form.Control
+              name="search"
               type="text"
               placeholder="Enter product name..."
               value={productName}
@@ -380,7 +389,7 @@ const Shop = () => {
           ) : (
             <Row>
               {products.map((product) => (
-                <Col key={product.id} sm={4} className="mb-4">
+                <Col key={product._id} sm={4} className="mb-4">
                   <Card>
                     <Card.Body>
                       <Card.Title>{product.productName}</Card.Title>
@@ -409,6 +418,9 @@ const Shop = () => {
                         On Sale:{" "}
                         {product.additionalFeatures.onSale ? "True" : "False"}
                       </Card.Text>
+                      <Button onClick={() => handleAddToCart(product)}>
+                        Add to Cart
+                      </Button>
                     </Card.Body>
                   </Card>
                 </Col>
