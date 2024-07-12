@@ -74,7 +74,7 @@ const Checkout = () => {
   return (
     <Container fluid className="checkout-container">
       <Row>
-        {/* Left side - Cart display */}
+        {/* right side*/}
         <Col sm={4} className="cart">
           <h2>Shopping Cart</h2>
           {cartItems.length === 0 ? (
@@ -99,11 +99,11 @@ const Checkout = () => {
             </>
           )}
         </Col>
-        {/* Right side - Order form */}
+        {/* // right side */}
         <Col sm={8}>
           <Card className="order-card">
             <Card.Body>
-              <h2>Order Details</h2>
+              <h2>Shipping Information</h2>
               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formName">
                   <Form.Label>Name</Form.Label>
