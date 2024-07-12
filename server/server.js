@@ -107,3 +107,61 @@ app.post("/ducks/search", async (req, res) => {
     res.status(500).send("Error searching for ducks");
   }
 });
+
+
+//search for ducks
+app.post("/ducks/checkout", async (req, res) => {
+  try {
+    const {
+      name,
+      email,
+      address,
+      city,
+      state,
+      zip,
+      creditCardNumber,
+      expirationDate,
+      cvv,
+    } = req.body;
+
+    console.log("Order info", {
+      name,
+      email,
+      address,
+      city,
+      state,
+      zip,
+      creditCardNumber,
+      expirationDate,
+      cvv,
+    });
+
+  // connect to  MongoDB
+  const client = await MongoClient.connect(url);
+  const db = client.db(dbName);
+  const collection = db.collection(process.env.MONGO_DB_COLLECTION_CHECKOUT);
+
+  //build doc  to be inserted
+  const checkoutData = {
+    name,
+    email,
+    address,
+    city,
+    state,
+    zip,
+    creditCardNumber,
+    expirationDate,
+    cvv,
+    //timestamp: new Date().toISOString(),
+};
+
+//insert the checkout data to MongoDB
+const result = await collection.insertOne(checkoutData);
+client.close(); 
+
+res.status(201).json({ message: "Checkout data saved successfully", data: result.ops });
+} catch (err) {
+console.error('Error:', err);
+res.status(500).send('Error saving checkout data');
+}
+});
