@@ -15,6 +15,7 @@ for duck in range(1000):
     isFeatured = True if duck < 5 else False  
 
     document = {
+        "productID": duck,
         "duckDetails": {
             "price": random.choice(prices),
             "size": random.choice(sizes),
