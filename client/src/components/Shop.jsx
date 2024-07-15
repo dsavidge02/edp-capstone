@@ -22,27 +22,29 @@ const styleToImage = {
   pirate: PirateImg,
 };
 
-const Shop = () => {
-  const [filters, setFilters] = useState({
-    low: 0,
-    high: 999,
-    size: ["small", "medium", "large"],
-    style: ["classic", "pirate", "sports", "animal", "food"],
-    speed: ["slow", "average", "fast", "mystery"],
-    condition: ["new", "used"],
-    buoyancy: true,
-    inStock: true,
-    isFeatured: false,
-    onSale: false,
-  });
+const initialFilters = {
+  low: 0,
+  high: 999,
+  size: ["small", "medium", "large"],
+  style: ["classic", "pirate", "sports", "animal", "food"],
+  speed: ["slow", "average", "fast", "mystery"],
+  condition: ["new", "used"],
+  buoyancy: true,
+  inStock: true,
+  isFeatured: false,
+  onSale: false,
+};
 
-  const [productName, setProductName] = useState("");
+const Shop = () => {
+  const [filters, setFilters] = useState(initialFilters);
+
+  const [duckName, setduckName] = useState("");
   const [products, setProducts] = useState([]);
   const { cartItems, addToCart, removeFromCart, searchCart } = useCart();
 
   useEffect(() => {
     filterDucks();
-  }, [filters, productName]);
+  }, [filters, duckName]);
 
   // Handle event change
   const handleEventChange = (e) => {
@@ -102,7 +104,7 @@ const Shop = () => {
           },
           body: JSON.stringify({
             ...filters,
-            productName: productName,
+            duckName: duckName,
           }),
         }
       );
@@ -123,7 +125,7 @@ const Shop = () => {
   };
 
   const handleSearchInputChange = (e) => {
-    setProductName(e.target.value);
+    setduckName(e.target.value);
   };
 
   const handleCartButton = (product) => {
@@ -135,6 +137,11 @@ const Shop = () => {
     }
   };
 
+  const resetFilters = () => {
+    setFilters(initialFilters);
+    setduckName("");
+  };
+
   return (
     <Container fluid className="shop-container">
       <Row>
@@ -144,8 +151,8 @@ const Shop = () => {
             <Form.Control
               name="search"
               type="text"
-              placeholder="Enter product name..."
-              value={productName}
+              placeholder="Enter duck name..."
+              value={duckName}
               onChange={handleSearchInputChange}
             />
             <Accordion>
@@ -397,6 +404,13 @@ const Shop = () => {
                 </Accordion.Body>
               </Accordion.Item>
             </Accordion>
+            <Button
+              variant="secondary"
+              onClick={resetFilters}
+              className={"mt-3"}
+            >
+              Reset Filters
+            </Button>
           </Form>
         </Col>
         {/* Main content area for products */}
@@ -417,6 +431,7 @@ const Shop = () => {
                     />
                     <Card.Body className="duckInfo">
                       <Row className="importantDetails">
+                        <Card.Title>{product.duckName}</Card.Title>
                         <Card.Text>
                           Price: ${product.duckDetails.price}
                         </Card.Text>
