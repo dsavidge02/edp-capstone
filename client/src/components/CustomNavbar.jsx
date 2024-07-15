@@ -68,7 +68,7 @@ const CustomNavbar = () => {
                 ALL DUCKS
               </NavDropdown.Item>
             </NavDropdown>
-            <Nav.Link
+            {/* <Nav.Link
               className="navbar-clickable navbar-link"
               as={Link}
               to="/login-register"
@@ -83,7 +83,7 @@ const CustomNavbar = () => {
               onClick={switchToLogin}
             >
               LOGIN
-            </Nav.Link>
+            </Nav.Link> */}
             <Nav.Link
               className="navbar-clickable navbar-link"
               id="navbar-shopping-cart"
