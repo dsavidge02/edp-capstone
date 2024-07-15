@@ -7,9 +7,23 @@ import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import "./css/Checkout.css";
+import PirateImg from "../assets/img/PirateDuck.png";
+import SportImg from "../assets/img/SportDuck.png";
+import FoodImg from "../assets/img/FoodDuck.png";
+import ClassicImg from "../assets/img/ClassicDuck.png";
+import AnimalImg from "../assets/img/AnimalDuck.png";
+
+const styleToImage = {
+  sports: SportImg,
+  food: FoodImg,
+  classic: ClassicImg,
+  animal: AnimalImg,
+  pirate: PirateImg,
+};
 
 const Checkout = () => {
-  const { cartItems, removeFromCart, getTotalPrice, clearCart } = useCart();
+  const { cartItems, removeFromCart, getTotalPrice, clearCart, searchCart } =
+    useCart();
 
   // State for order form inputs and submission status
   const [orderDetails, setOrderDetails] = useState({
@@ -66,9 +80,13 @@ const Checkout = () => {
     }
   };
 
-  const handleRemoveFromCart = (item) => {
-    console.log("Removing item:", item.productName);
-    removeFromCart(item);
+  const handleCartButton = (product) => {
+    const existingItem = cartItems.find((item) => item._id === product._id);
+    if (existingItem) {
+      removeFromCart(product);
+    } else {
+      addToCart(product);
+    }
   };
 
   const handleExpirationDateChange = (e) => {
@@ -102,17 +120,94 @@ const Checkout = () => {
             <>
               <h3>Total Price : ${getTotalPrice()}</h3>
               <ul>
-                {cartItems.map((item) => (
-                  <li key={item._id}>
-                    {item.productName} - ${item.duckDetails.price}
-                    <Button
-                      variant="danger"
-                      className="ml-2"
-                      onClick={() => handleRemoveFromCart(item)}
-                    >
-                      Remove
-                    </Button>
-                  </li>
+                {cartItems.map((product) => (
+                  <Col key={product._id} sm={4} className="mb-4">
+                    <Card className="duck-card">
+                      <img
+                        src={
+                          styleToImage[product.duckDetails.style] || ClassicImg
+                        }
+                        alt={product.duckDetails.style}
+                        className={`duck-icon ${product.duckDetails.size}`}
+                      />
+                      <Card.Body className="duckInfo">
+                        <Row className="importantDetails">
+                          <Card.Text>
+                            Price: ${product.duckDetails.price}
+                          </Card.Text>
+                        </Row>
+                        <Row className="duckDetails">
+                          <Col sm={6}>
+                            <Card.Text>
+                              Size: {product.duckDetails.size}
+                            </Card.Text>
+                            <Card.Text>
+                              Speed: {product.duckDetails.speed}
+                            </Card.Text>
+                          </Col>
+                          <Col sm={6}>
+                            <Card.Text>
+                              Style: {product.duckDetails.style}
+                            </Card.Text>
+                            <Card.Text>
+                              Condition: {product.duckDetails.condition}
+                            </Card.Text>
+                          </Col>
+                        </Row>
+                        <Row className="additionalFeatures border-top pt-3">
+                          <Col sm={6}>
+                            <Card.Text>
+                              In Stock:{" "}
+                              {product.additionalFeatures.inStock ? "✔️" : "❌"}
+                            </Card.Text>
+                            <Card.Text>
+                              Featured:{" "}
+                              {product.additionalFeatures.isFeatured
+                                ? "✔️"
+                                : "❌"}
+                            </Card.Text>
+                          </Col>
+                          <Col sm={6}>
+                            <Card.Text>
+                              Buoyant:{" "}
+                              {product.additionalFeatures.buoyancy
+                                ? "✔️"
+                                : "❌"}
+                            </Card.Text>
+                            <Card.Text>
+                              On Sale:{" "}
+                              {product.additionalFeatures.onSale ? "✔️" : "❌"}
+                            </Card.Text>
+                          </Col>
+                        </Row>
+                        <Row className="cartButton">
+                          <Button
+                            onClick={() => handleCartButton(product)}
+                            disabled={!product.additionalFeatures.inStock}
+                            style={{
+                              backgroundColor: searchCart(product)
+                                ? "red"
+                                : product.additionalFeatures.inStock
+                                ? ""
+                                : "gray",
+                              color: searchCart(product)
+                                ? "white"
+                                : product.additionalFeatures.inStock
+                                ? ""
+                                : "black",
+                              cursor: product.additionalFeatures.inStock
+                                ? "pointer"
+                                : "not-allowed",
+                            }}
+                          >
+                            {searchCart(product)
+                              ? "Remove from Cart"
+                              : "Add to Cart"}
+                          </Button>
+                        </Row>
+                      </Card.Body>
+                    </Card>
+                  </Col>
                 ))}
               </ul>
             </>
