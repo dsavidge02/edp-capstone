@@ -71,6 +71,9 @@ const Featured = () => {
                   />
                   <Card.Body className="duckInfo">
                     <Row className="importantDetails">
+                    <Card.Title>
+                          {product.duckName}
+                        </Card.Title>
                       <Card.Text>Price: ${product.duckDetails.price}</Card.Text>
                     </Row>
                     <Row className="duckDetails">

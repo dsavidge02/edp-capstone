@@ -8,6 +8,21 @@ speeds = ["slow", "average", "fast", "mystery"]
 conditions = ["new", "used"]
 sizes = ["small", "medium", "large"]
 
+#duck name lis
+duckNamesList = [
+    "Daffy", "Donald", "Daisy", "Quacky", "Dewey", "Louie", "Webby", "Puddles", "Quackers",
+    "Scrooge", "Feathers", "Waddles", "Flapper", "Squeaky", "Bob", "Scooter", "Splash", "Peck", "Dave", "Chris", "Bronny", "Lebron"
+]
+duckAdjectivesList = ["happy", "fluffy", "silly", "brave", "cuddly", "wise", "lucky", "cheerful", "mighty", "gentle",
+    "angry", "speedy", "chipper", "quick", "quacky", "whacky", "mad", "sad", "confident"]
+
+# generate a random duck name with two adjectives and one name
+def genDuckName():
+    adj1 = random.choice(duckAdjectivesList)
+    adj2 = random.choice(duckAdjectivesList)
+    name = random.choice(duckNamesList)
+    return f"{adj1.capitalize()} {adj2.capitalize()} {name}"
+
 # generate 1,000 JSON documents
 documents = []
 for duck in range(1000):
@@ -15,6 +30,7 @@ for duck in range(1000):
     isFeatured = True if duck < 5 else False  
 
     document = {
+        "duckName": genDuckName(),
         "productID": duck,
         "duckDetails": {
             "price": random.choice(prices),
