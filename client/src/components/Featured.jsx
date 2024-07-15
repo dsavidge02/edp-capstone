@@ -17,7 +17,7 @@ const styleToImage = {
   food: FoodImg,
   classic: ClassicImg,
   animal: AnimalImg,
-  pirate: PirateImg 
+  pirate: PirateImg,
 };
 
 const Featured = () => {
@@ -64,23 +64,78 @@ const Featured = () => {
             {featuredDucks.map((product) => (
               <Col key={product._id} sm={4} className="mb-4">
                 <Card className="duck-card">
-                <img
-                src={styleToImage[product.duckDetails.style] || ClassicImg} 
-                alt={product.duckDetails.style}
-                className="duck-icon"
-              />
-                  <Card.Body>
-                    <Card.Title>{product.productName}</Card.Title>
-                    <Card.Text>Price: ${product.duckDetails.price}</Card.Text>
-                    <Card.Text>Size: {product.duckDetails.size}</Card.Text>
-                    <Card.Text>Style: {product.duckDetails.style}</Card.Text>
-                    <Card.Text>Speed: {product.duckDetails.speed}</Card.Text>
-                    <Card.Text>
-                      Condition: {product.duckDetails.condition}
-                    </Card.Text>
-                    <Button onClick={() => handleCartButton(product)}>
-                      {searchCart(product) ? "Remove from Cart" : "Add to Cart"}
-                    </Button>
+                  <img
+                    src={styleToImage[product.duckDetails.style] || ClassicImg}
+                    alt={product.duckDetails.style}
+                    className={`duck-icon ${product.duckDetails.size}`}
+                  />
+                  <Card.Body className="duckInfo">
+                    <Row className="importantDetails">
+                      <Card.Text>Price: ${product.duckDetails.price}</Card.Text>
+                    </Row>
+                    <Row className="duckDetails">
+                      <Col sm={6}>
+                        <Card.Text>Size: {product.duckDetails.size}</Card.Text>
+                        <Card.Text>
+                          Speed: {product.duckDetails.speed}
+                        </Card.Text>
+                      </Col>
+                      <Col sm={6}>
+                        <Card.Text>
+                          Style: {product.duckDetails.style}
+                        </Card.Text>
+                        <Card.Text>
+                          Condition: {product.duckDetails.condition}
+                        </Card.Text>
+                      </Col>
+                    </Row>
+                    <Row className="additionalFeatures border-top pt-3">
+                      <Col sm={6}>
+                        <Card.Text>
+                          In Stock:{" "}
+                          {product.additionalFeatures.inStock ? "✔️" : "❌"}
+                        </Card.Text>
+                        <Card.Text>
+                          Featured:{" "}
+                          {product.additionalFeatures.isFeatured ? "✔️" : "❌"}
+                        </Card.Text>
+                      </Col>
+                      <Col sm={6}>
+                        <Card.Text>
+                          Buoyant:{" "}
+                          {product.additionalFeatures.buoyancy ? "✔️" : "❌"}
+                        </Card.Text>
+                        <Card.Text>
+                          On Sale:{" "}
+                          {product.additionalFeatures.onSale ? "✔️" : "❌"}
+                        </Card.Text>
+                      </Col>
+                    </Row>
+                    <Row className="cartButton">
+                      <Button
+                        onClick={() => handleCartButton(product)}
+                        disabled={!product.additionalFeatures.inStock}
+                        style={{
+                          backgroundColor: searchCart(product)
+                            ? "red"
+                            : product.additionalFeatures.inStock
+                            ? ""
+                            : "gray",
+                          color: searchCart(product)
+                            ? "white"
+                            : product.additionalFeatures.inStock
+                            ? ""
+                            : "black",
+                          cursor: product.additionalFeatures.inStock
+                            ? "pointer"
+                            : "not-allowed",
+                        }}
+                      >
+                        {searchCart(product)
+                          ? "Remove from Cart"
+                          : "Add to Cart"}
+                      </Button>
+                    </Row>
                   </Card.Body>
                 </Card>
               </Col>
