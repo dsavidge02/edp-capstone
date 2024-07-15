@@ -1,5 +1,6 @@
 .checkout-container {
   padding-top: 20px;
+  width: 1175px; 
 }
 
 .cart {
@@ -24,3 +25,17 @@
     margin-top: 20px;
   }
 }
+
+.cvvBox {
+  width: 80px; 
+}
+
+.zipBox {
+  width:100px; 
+}
+
+
+.stateBox {
+  width:150px; 
+}
+

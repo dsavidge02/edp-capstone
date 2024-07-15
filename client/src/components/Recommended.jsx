@@ -67,6 +67,8 @@ const Recommended = () => {
         console.error("Error fetching recommended ducks", error);
         // Handle errors here
       }
+    } else {
+      setRecommendedDucks([]);
     }
   };
 
@@ -84,7 +86,12 @@ const Recommended = () => {
       <Row>
         <Col>
           <h2>Recommended Ducks</h2>
-          <Row>
+          {cartItems.length === 0 ? (
+            <div className="no-recommendations">
+              No duck recommendations. Add duck to cart for personalized recommendations.
+            </div>
+          ) : (
+            <Row>
             {recommendedDucks.map((product) => (
               <Col key={product._id} sm={4} className="mb-4">
                 <Card className="duck-card">
@@ -165,6 +172,7 @@ const Recommended = () => {
               </Col>
             ))}
           </Row>
+          )}
           <div className="mt-4">
             <Link to="/shop">
               <Button variant="primary">Shop All Ducks</Button>
