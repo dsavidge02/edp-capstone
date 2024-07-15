@@ -48,7 +48,7 @@ app.post("/ducks/search", async (req, res) => {
       onSale,
       low,
       high,
-      productName,
+      duckName,
     } = req.body;
 
     console.log("Searching for ducks with filters:", {
@@ -62,7 +62,7 @@ app.post("/ducks/search", async (req, res) => {
       onSale,
       low,
       high,
-      productName,
+      duckName,
     });
 
     // connect to  MongoDB
@@ -72,8 +72,8 @@ app.post("/ducks/search", async (req, res) => {
 
     //query object based on selected filters
     const query = {};
-    if (productName) {
-      query["productName"] = { $regex: productName, $options: "i" };
+    if (duckName) {
+      query["duckName"] = { $regex: duckName, $options: "i" };
     }
     if (size && size.length > 0) query["duckDetails.size"] = { $in: size };
     if (style && style.length > 0) query["duckDetails.style"] = { $in: style };

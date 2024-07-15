@@ -36,13 +36,13 @@ const Shop = () => {
     onSale: false,
   });
 
-  const [productName, setProductName] = useState("");
+  const [duckName, setduckName] = useState("");
   const [products, setProducts] = useState([]);
   const { cartItems, addToCart, removeFromCart, searchCart } = useCart();
 
   useEffect(() => {
     filterDucks();
-  }, [filters, productName]);
+  }, [filters, duckName]);
 
   // Handle event change
   const handleEventChange = (e) => {
@@ -102,7 +102,7 @@ const Shop = () => {
           },
           body: JSON.stringify({
             ...filters,
-            productName: productName,
+            duckName: duckName,
           }),
         }
       );
@@ -123,7 +123,7 @@ const Shop = () => {
   };
 
   const handleSearchInputChange = (e) => {
-    setProductName(e.target.value);
+    setduckName(e.target.value);
   };
 
   const handleCartButton = (product) => {
@@ -144,8 +144,8 @@ const Shop = () => {
             <Form.Control
               name="search"
               type="text"
-              placeholder="Enter product name..."
-              value={productName}
+              placeholder="Enter duck name..."
+              value={duckName}
               onChange={handleSearchInputChange}
             />
             <Accordion>
@@ -417,6 +417,9 @@ const Shop = () => {
                     />
                     <Card.Body className="duckInfo">
                       <Row className="importantDetails">
+                      <Card.Title>
+                          {product.duckName}
+                        </Card.Title>
                         <Card.Text>
                           Price: ${product.duckDetails.price}
                         </Card.Text>
