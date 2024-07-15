@@ -22,19 +22,21 @@ const styleToImage = {
   pirate: PirateImg,
 };
 
+const initialFilters = {
+  low: 0,
+  high: 999,
+  size: ["small", "medium", "large"],
+  style: ["classic", "pirate", "sports", "animal", "food"],
+  speed: ["slow", "average", "fast", "mystery"],
+  condition: ["new", "used"],
+  buoyancy: true,
+  inStock: true,
+  isFeatured: false,
+  onSale: false,
+};
+
 const Shop = () => {
-  const [filters, setFilters] = useState({
-    low: 0,
-    high: 999,
-    size: ["small", "medium", "large"],
-    style: ["classic", "pirate", "sports", "animal", "food"],
-    speed: ["slow", "average", "fast", "mystery"],
-    condition: ["new", "used"],
-    buoyancy: true,
-    inStock: true,
-    isFeatured: false,
-    onSale: false,
-  });
+  const [filters, setFilters] = useState(initialFilters);
 
   const [duckName, setduckName] = useState("");
   const [products, setProducts] = useState([]);
@@ -133,6 +135,11 @@ const Shop = () => {
     } else {
       addToCart(product);
     }
+  };
+
+  const resetFilters = () => {
+    setFilters(initialFilters);
+    setduckName("");
   };
 
   return (
@@ -397,6 +404,13 @@ const Shop = () => {
                 </Accordion.Body>
               </Accordion.Item>
             </Accordion>
+            <Button
+              variant="secondary"
+              onClick={resetFilters}
+              className={"mt-3"}
+            >
+              Reset Filters
+            </Button>
           </Form>
         </Col>
         {/* Main content area for products */}
@@ -417,9 +431,7 @@ const Shop = () => {
                     />
                     <Card.Body className="duckInfo">
                       <Row className="importantDetails">
-                      <Card.Title>
-                          {product.duckName}
-                        </Card.Title>
+                        <Card.Title>{product.duckName}</Card.Title>
                         <Card.Text>
                           Price: ${product.duckDetails.price}
                         </Card.Text>
