@@ -32,7 +32,7 @@ def predict():
         all_recommendations = []
         for i in range(num_items):
             product_index = cart_indices[i]
-            selected_product_features = df_encoded[df_encoded['productID'] == product_index]
+            selected_product_features = df_encoded.iloc[[product_index]]
             if selected_product_features.empty:
                 return jsonify({'error': 'Product index not found'}), 400
             
