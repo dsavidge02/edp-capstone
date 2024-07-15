@@ -67,6 +67,8 @@ const Recommended = () => {
         console.error("Error fetching recommended ducks", error);
         // Handle errors here
       }
+    } else {
+      setRecommendedDucks([]);
     }
   };
 
@@ -84,34 +86,40 @@ const Recommended = () => {
       <Row>
         <Col>
           <h2>Recommended Ducks</h2>
-          <Row>
-            {recommendedDucks.map((duck) => (
-              <Col key={duck._id} sm={4} className="mb-4">
-                <Card className="duck-card">
-                  <img
-                    src={styleToImage[duck.duckDetails.style] || ClassicImg}
-                    alt={duck.duckDetails.style}
-                    className="duck-icon"
-                  />
-                  <Card.Body>
-                    <Card.Title>{duck.productName}</Card.Title>
-                    <Card.Text>
-                      Price: ${duck.duckDetails.price.toFixed(2)}
-                    </Card.Text>
-                    <Card.Text>Size: {duck.duckDetails.size}</Card.Text>
-                    <Card.Text>Style: {duck.duckDetails.style}</Card.Text>
-                    <Card.Text>Speed: {duck.duckDetails.speed}</Card.Text>
-                    <Card.Text>
-                      Condition: {duck.duckDetails.condition}
-                    </Card.Text>
-                    <Button onClick={() => handleCartButton(duck)}>
-                      {searchCart(duck) ? "Remove from Cart" : "Add to Cart"}
-                    </Button>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
+          {cartItems.length === 0 ? (
+            <div className="no-recommendations">
+              No duck recommendations. Add duck to cart for personalized recommendations.
+            </div>
+          ) : (
+            <Row>
+              {recommendedDucks.map((duck) => (
+                <Col key={duck._id} sm={4} className="mb-4">
+                  <Card className="duck-card">
+                    <img
+                      src={styleToImage[duck.duckDetails.style] || ClassicImg}
+                      alt={duck.duckDetails.style}
+                      className="duck-icon"
+                    />
+                    <Card.Body>
+                      <Card.Title>{duck.productName}</Card.Title>
+                      <Card.Text>
+                        Price: ${duck.duckDetails.price.toFixed(2)}
+                      </Card.Text>
+                      <Card.Text>Size: {duck.duckDetails.size}</Card.Text>
+                      <Card.Text>Style: {duck.duckDetails.style}</Card.Text>
+                      <Card.Text>Speed: {duck.duckDetails.speed}</Card.Text>
+                      <Card.Text>
+                        Condition: {duck.duckDetails.condition}
+                      </Card.Text>
+                      <Button onClick={() => handleCartButton(duck)}>
+                        {searchCart(duck) ? "Remove from Cart" : "Add to Cart"}
+                      </Button>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              ))}
+            </Row>
+          )}
           <div className="mt-4">
             <Link to="/shop">
               <Button variant="primary">Shop All Ducks</Button>

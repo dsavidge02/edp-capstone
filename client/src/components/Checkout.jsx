@@ -71,10 +71,29 @@ const Checkout = () => {
     removeFromCart(item);
   };
 
+  const handleExpirationDateChange = (e) => {
+    let { value } = e.target;
+    value = value.replace(/\D/g, ''); // Remove non-numeric characters
+    if (value.length > 2) {
+      value = value.slice(0, 2) + '/' + value.slice(2);
+    }
+    setOrderDetails((prevDetails) => ({
+      ...prevDetails,
+      expirationDate: value,
+    }));
+  };
+
+  const stateIDs = [
+    "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL",
+    "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT",
+    "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI",
+    "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"
+  ];
+
   return (
     <Container fluid className="checkout-container">
       <Row>
-        {/* right side*/}
+        {/* right side */}
         <Col sm={4} className="cart">
           <h2>Shopping Cart</h2>
           {cartItems.length === 0 ? (
@@ -109,7 +128,7 @@ const Checkout = () => {
                   <Form.Label>Name</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Enter your name"
+                    placeholder="Enter your full name"
                     name="name"
                     value={orderDetails.name}
                     onChange={handleInputChange}
@@ -153,65 +172,92 @@ const Checkout = () => {
                   />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formState">
-                  <Form.Label>State</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter state"
+            <Row className="mb-3">
+            <Col sm={6}>
+                <Form.Group controlId="formState" className="d-flex align-items-center">
+                <Form.Label style={{ marginRight: '15px', marginBottom: '0' }}>State</Form.Label> {/* Inline style for margin */}
+                <Form.Control
+                    as="select"
                     name="state"
                     value={orderDetails.state}
                     onChange={handleInputChange}
                     required
-                  />
+                    className="stateBox"
+                >
+                    <option value="">Select a state</option>
+                    {stateIDs.map((state) => (
+                    <option key={state} value={state}>
+                        {state}
+                    </option>
+                    ))}
+                </Form.Control>
                 </Form.Group>
-
-                <Form.Group className="mb-3" controlId="formZip">
-                  <Form.Label>Zip Code</Form.Label>
-                  <Form.Control
+            </Col>
+            <Col sm={6}>
+                <Form.Group controlId="formZip" className="d-flex align-items-center">
+                <Form.Label style={{ marginRight: '15px', marginBottom: '0' }}>Zip Code</Form.Label> {/* Inline style for margin */}
+                <Form.Control
                     type="text"
-                    placeholder="Enter zip code"
+                    placeholder="Enter zip"
                     name="zip"
                     value={orderDetails.zip}
                     onChange={handleInputChange}
                     required
-                  />
+                    pattern="\d{5}"
+                    maxLength="5"
+                    className="zipBox"
+                />
                 </Form.Group>
-
-                <Form.Group className="mb-3" controlId="formCreditCardNumber">
-                  <Form.Label>Credit Card Number</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter credit card number"
-                    name="creditCardNumber"
-                    value={orderDetails.creditCardNumber}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </Form.Group>
-
-                <Form.Group className="mb-3" controlId="formExpirationDate">
-                  <Form.Label>Expiration Date</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="MM/YY"
-                    name="expirationDate"
-                    value={orderDetails.expirationDate}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </Form.Group>
-
-                <Form.Group className="mb-3" controlId="formCVV">
-                  <Form.Label>CVV</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter CVV"
-                    name="cvv"
-                    value={orderDetails.cvv}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </Form.Group>
+            </Col>
+            </Row>
+                <Row className="mb-3">
+                  <Col sm={6}>
+                    <Form.Group controlId="formCreditCardNumber">
+                      <Form.Label>Credit Card Number</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Enter credit card number"
+                        name="creditCardNumber"
+                        value={orderDetails.creditCardNumber}
+                        onChange={handleInputChange}
+                        required
+                        pattern="\d{16}"
+                        maxLength="16"
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col sm={3}>
+                    <Form.Group controlId="formExpirationDate">
+                      <Form.Label>Expiration Date</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="MM/YY"
+                        name="expirationDate"
+                        value={orderDetails.expirationDate}
+                        onChange={handleExpirationDateChange}
+                        required
+                        maxLength="5"
+                        className="expirationDateBox"
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col sm={3}>
+                    <Form.Group controlId="formCVV">
+                      <Form.Label>CVV</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="CVV"
+                        name="cvv"
+                        value={orderDetails.cvv}
+                        onChange={handleInputChange}
+                        required
+                        pattern="\d{3}"
+                        maxLength="3"
+                        className="cvvBox"
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
 
                 <Button variant="primary" type="submit" disabled={submitting}>
                   {submitting ? "Submitting..." : "Place Order"}
